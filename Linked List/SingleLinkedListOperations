@@ -1,0 +1,172 @@
+ #include<cstdio>
+#include<iostream>
+#include<stdlib.h>
+
+using namespace std;
+
+struct node
+{
+    int data;
+    struct node* next;
+};
+
+struct node* head = NULL;
+int cnt;
+void append()
+{
+    struct node* temp;
+    temp = (struct node*)malloc(sizeof(struct node));
+    int data;
+    printf("Enter data to insert at end: ");
+    scanf("%d", &data);
+    temp->data = data;
+    if(head == NULL)
+        head = temp;
+    else
+    {
+        struct node* p;
+        p = head;
+        while(p->next != NULL)
+            p = p->next;
+        p->next=temp;
+    }
+    printf("Append %d at end of linked list\n\n\n", data);
+}
+
+void display()
+{
+    struct node* p;
+    p = head;
+    while(p != NULL)
+    {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+    printf("\n\n");
+}
+void insert_begin()
+{
+    struct node* temp;
+    temp = (struct node*)malloc(sizeof(struct node));
+    int data;
+    printf("Enter data to insert at begin: ");
+    scanf("%d", &data);
+    temp->data = data;
+    temp->next = NULL;
+    if(head == NULL)
+        head = temp;
+    else
+    {
+        struct node* p;
+        p = head;
+        temp->next=p;
+        head = temp;
+    }
+
+}
+void insert_pos()
+{
+    struct node *temp, *p;
+    p = head;
+    int pos, data, cur = 1;
+    printf("Enter the position: ");
+    scanf("%d", &pos);
+    printf("Enter the data: ");
+    scanf("%d", &data);
+
+    temp = (struct node*)malloc(sizeof(struct node));
+    temp->data=data;
+    temp->next=NULL;
+    while(cur < pos)
+    {
+        p = p->next;
+        cur++;
+    }
+    temp->next = p->next;
+    p->next = temp;
+
+}
+int list_lingth()
+{
+    int cnt = 0;
+    struct node* p;
+    p = head;
+    while(p != NULL)
+    {
+        cnt++;
+        p = p->next;
+    }
+
+
+    return cnt;
+
+}
+
+void delete_node()
+{
+    struct node* temp;
+    int pos;
+    printf("Enter the position you want to delete: ");
+    scanf("%d", &pos);
+    if(list_lingth()-1 < pos)
+        printf("Invalid Position\n");
+    else if(pos == 0) //Delete First Node from List;
+    {
+        temp = head;
+        head = temp->next;
+        temp->next = NULL;
+        free(temp);
+    }
+    else //Last and any Mid node Delete from List
+    {
+        struct node *p = head, *q;
+        int cur = 1;
+        while(cur < pos)
+        {
+            p = p->next;
+            cur++;
+        }
+        q = p->next;
+        p->next = q->next;
+        q->next = NULL;
+        free(q);
+    }
+}
+int main()
+{
+    int op;
+    while(1)
+    {
+        printf("Press 1 for append\n");
+        printf("Press 2 for insert in begin\n");
+        printf("Press 3 for insert in mid\n");
+        printf("Press 4 for Length\n");
+        printf("Press 5 for Delete\n");
+        printf("Press 6 for Display\n");
+        printf("Press 7 for Quit\n\n\n");
+        printf("Enter your choice: ");
+        scanf("%d", &op);
+        switch(op)
+        {
+            case 1: append();
+                    break;
+            case 2: insert_begin();
+                    break;
+            case 3: insert_pos();
+                    break;
+            case 4:
+                    cnt = list_lingth();
+                    printf("length: %d\n\n", cnt);
+                    break;
+            case 5: delete_node();
+                    break;
+            case 6: display();
+                    break;
+            case 7: exit(1);
+            default: printf("Invalid Input\n");
+        }
+    }
+
+    return 0;
+}
+
